@@ -1,0 +1,48 @@
+﻿using System.ComponentModel;
+
+namespace OpenRouterClient.Library.Models.Enums;
+
+public enum OpenRouterProviders
+{
+    [Description("OpenAI")] OpenAI,
+    [Description("Anthropic")] Anthropic,
+    [Description("Google")] Google,
+    [Description("Google AI Studio")] GoogleAIStudio,
+    [Description("Amazon Bedrock")] AmazonBedrock,
+    [Description("Groq")] Groq,
+    [Description("SambaNova")] SambaNova,
+    [Description("Cohere")] Cohere,
+    [Description("Mistral")] Mistral,
+    [Description("Together")] Together,
+    [Description("Together 2")] Together2,
+    [Description("Fireworks")] Fireworks,
+    [Description("DeepInfra")] DeepInfra,
+    [Description("Lepton")] Lepton,
+    [Description("Novita")] Novita,
+    [Description("Avian")] Avian,
+    [Description("Lambda")] Lambda,
+    [Description("Azure")] Azure,
+    [Description("Modal")] Modal,
+    [Description("AnyScale")] AnyScale,
+    [Description("Replicate")] Replicate,
+    [Description("Perplexity")] Perplexity,
+    [Description("Recursal")] Recursal,
+    [Description("OctoAI")] OctoAI,
+    [Description("DeepSeek")] DeepSeek,
+    [Description("Infermatic")] Infermatic,
+    [Description("AI21")] AI21,
+    [Description("Featherless")] Featherless,
+    [Description("Inflection")] Inflection,
+    [Description("xAI")] xAI,
+    [Description("Cloudflare")] Cloudflare,
+    [Description("SF Compute")] SFCompute,
+    [Description("01.AI")] AI01,
+    [Description("HuggingFace")] HuggingFace,
+    [Description("Mancer")] Mancer,
+    [Description("Mancer 2")] Mancer2,
+    [Description("Hyperbolic")] Hyperbolic,
+    [Description("Hyperbolic 2")] Hyperbolic2,
+    [Description("Lynn 2")] Lynn2,
+    [Description("Lynn")] Lynn,
+    [Description("Reflection")] Reflection
+}

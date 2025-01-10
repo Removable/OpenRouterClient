@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using OpenRouterClient.Library.Models.Enums;
 
 namespace OpenRouterClient.Library.Models;
 
@@ -93,20 +94,29 @@ public class ChatCompletionCreateRequest
     [JsonPropertyName("prediction")] public Prediction? Prediction { get; set; }
     [JsonPropertyName("transforms")] public string[]? Transforms { get; set; }
     [JsonPropertyName("models")] public string? Models { get; set; }
-    private string? _route;
 
-    [JsonPropertyName("route")]
-    public string? Route
+    [JsonPropertyName("route")] public string? RouteValue { get; internal set; }
+
+    [JsonIgnore]
+    public RouteValues Route
     {
-        get => _route;
+        get => RouteValue switch
+        {
+            "fallback" => RouteValues.Fallback,
+            null => RouteValues.Null,
+            _ => throw new ArgumentOutOfRangeException(nameof(RouteValue), RouteValue, null)
+        };
         set
         {
-            if (value is not null && value != "fallback")
+            RouteValue = value switch
             {
-                throw new ValidationException("The value of Route property must be 'fallback' or null.");
-            }
-
-            _route = value;
+                RouteValues.Fallback => "fallback",
+                RouteValues.Null => null,
+                _ => throw new ArgumentOutOfRangeException(nameof(value), value, null)
+            };
         }
     }
+    
+    [JsonPropertyName("provider")]
+    public ProviderPreferences? Provider { get; set; }
 }
