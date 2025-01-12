@@ -28,11 +28,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        name: Checkout code
         with:
           fetch-depth: 0
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
+        with:
+            dotnet-version: 9.0.x
 
       - name: Create Nuget directory
         run: dotnet pack --configuration Release --output ${{ env.NUGET_DIR }} ${{ env.PROJECT_FILE_PATH }}
