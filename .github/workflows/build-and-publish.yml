@@ -22,6 +22,7 @@ on:
 env:
   PROJECT_FILE_PATH: OpenRouterClient.Library/OpenRouterClient.Library.csproj
   NUGET_DIR: Release
+  DOTNET_VERSION: 9.0.x
 
 jobs:
   create_nuget_package:
@@ -35,7 +36,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-            dotnet-version: 9.0.x
+            dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Create Nuget directory
         run: dotnet pack --configuration Release --output ${{ env.NUGET_DIR }} ${{ env.PROJECT_FILE_PATH }}
@@ -54,6 +55,8 @@ jobs:
     steps:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Download Nuget package
         uses: actions/download-artifact@v4
@@ -79,6 +82,8 @@ jobs:
 
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Publish NuGet package
         run: |
