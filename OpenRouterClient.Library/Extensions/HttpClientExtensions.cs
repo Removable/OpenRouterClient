@@ -2,6 +2,7 @@
 using System.Net.Http.Json;
 using System.Text.Json;
 using OpenRouterClient.Library.Models;
+using OpenRouterClient.Library.Models.Response;
 
 namespace OpenRouterClient.Library.Extensions;
 

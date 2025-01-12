@@ -53,7 +53,7 @@ public class ChatMessage
     ///     The role of the author of this message. One of system, user, or assistant.
     /// </summary>
     [JsonPropertyName("role")]
-    public string Role { get; set; }
+    public string Role { get; set; } = null!;
 
     [JsonIgnore] public string? Content { get; set; }
 
@@ -80,7 +80,7 @@ public class ChatMessage
 
             return Contents!;
         }
-        set => Content = value?.ToString();
+        set => Content = value.ToString();
     }
 
     /// <summary>

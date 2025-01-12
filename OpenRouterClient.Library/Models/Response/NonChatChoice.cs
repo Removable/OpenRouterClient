@@ -1,6 +1,6 @@
-﻿namespace OpenRouterClient.Library.Models;
+﻿namespace OpenRouterClient.Library.Models.Response;
 
-public class NonChatChoice
+public class NonChatChoice: IChoice
 {
     [JsonPropertyName("finish_reason")]
     public string? FinishReason { get; set; }

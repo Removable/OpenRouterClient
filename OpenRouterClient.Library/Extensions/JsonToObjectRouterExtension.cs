@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using OpenRouterClient.Library.Models;
+using OpenRouterClient.Library.Models.Response;
 
 namespace OpenRouterClient.Library.Extensions;
 
@@ -13,8 +14,8 @@ public static class JsonToObjectRouterExtension
         {
             // "thread.run.step" => typeof(RunStepResponse),
             // "thread.run" => typeof(RunResponse),
-            "thread.message" => typeof(ChatMessageResponse),
-            "thread.message.delta" => typeof(ChatMessageResponse),
+            // "thread.message" => typeof(ChatMessageResponse),
+            // "thread.message.delta" => typeof(ChatMessageResponse),
             _ => typeof(BaseResponse)
         };
     }

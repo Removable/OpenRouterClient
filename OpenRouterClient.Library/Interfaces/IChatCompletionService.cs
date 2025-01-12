@@ -1,4 +1,5 @@
 ﻿using OpenRouterClient.Library.Models;
+using OpenRouterClient.Library.Models.Response;
 
 namespace OpenRouterClient.Library.Interfaces;
 

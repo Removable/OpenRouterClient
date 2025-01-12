@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using OpenRouterClient.Library.Interfaces;
 using OpenRouterClient.Library.Models;
+using OpenRouterClient.Library.Models.Response;
 
 namespace OpenRouterClient.Library.Services;
 
@@ -30,20 +31,11 @@ public partial class OpenRouterService : IOpenRouterService, IDisposable
             _httpClient = httpClient;
         }
 
-        _httpClient.BaseAddress = new(settings.BaseUrl);
-    }
-
-    public Task<ChatCompletionCreateResponse> ChatCompletionCreate(ChatCompletionCreateRequest chatCompletionCreateRequest,
-        CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    public IAsyncEnumerable<ChatCompletionCreateResponse> ChatCompletionCreateStream(
-        ChatCompletionCreateRequest chatCompletionCreateRequest,
-        CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
+        _httpClient.BaseAddress = new Uri(settings.BaseUrl);
+        _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {settings.ApiKey}");
+        // _httpClient.DefaultRequestHeaders.Add("Content-Type", "application/json");
+        _httpClient.DefaultRequestHeaders.Add("X-Title", settings.XTitle);
+        _httpClient.DefaultRequestHeaders.Add("HTTP-Referer", settings.HttpReferer);
     }
 
     /// <summary>
@@ -56,8 +48,8 @@ public partial class OpenRouterService : IOpenRouterService, IDisposable
     }
 
     public IModelService Models => this;
-    
-    public IChatCompletionService ChatCompletions => this;
+
+    public IChatCompletionService ChatCompletion => this;
 
     protected virtual void Dispose(bool disposing)
     {

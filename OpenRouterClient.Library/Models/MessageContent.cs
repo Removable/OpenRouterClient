@@ -7,7 +7,7 @@ public class MessageContent
     ///     note: Currently openAI doesn't support images in the first system message.
     /// </summary>
     [JsonPropertyName("type")]
-    public string Type { get; set; }
+    public string Type { get; set; } = null!;
 
     /// <summary>
     ///     If the value of Type property is "text" then Text property must contain the message content text

@@ -1,13 +1,15 @@
-﻿using OpenRouterClient.Library.Extensions;
+﻿using System.Runtime.CompilerServices;
+using OpenRouterClient.Library.Extensions;
 using OpenRouterClient.Library.Interfaces;
 using OpenRouterClient.Library.Models;
+using OpenRouterClient.Library.Models.Response;
 
 namespace OpenRouterClient.Library.Services;
 
 public partial class OpenRouterService : IChatCompletionService
 {
     private const string ChatCompletionsEndpoint = "chat/completions";
-    
+
     public async Task<ChatCompletionCreateResponse> CreateCompletion(
         ChatCompletionCreateRequest chatCompletionCreateRequest, CancellationToken cancellationToken = default)
     {
@@ -17,11 +19,12 @@ public partial class OpenRouterService : IChatCompletionService
 
     public async IAsyncEnumerable<ChatCompletionCreateResponse> CreateCompletionAsStream(
         ChatCompletionCreateRequest chatCompletionCreateRequest, bool justDataMode = true,
-        CancellationToken cancellationToken = default)
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         chatCompletionCreateRequest.Stream = true;
-        
-        using var response = _httpClient.PostAsStreamAsync(ChatCompletionsEndpoint, chatCompletionCreateRequest, cancellationToken);
+
+        using var response =
+            _httpClient.PostAsStreamAsync(ChatCompletionsEndpoint, chatCompletionCreateRequest, cancellationToken);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -29,6 +32,7 @@ public partial class OpenRouterService : IChatCompletionService
             yield break;
         }
 
-        await foreach (var baseResponse in response.AsStream<ChatCompletionCreateResponse>(cancellationToken: cancellationToken)) yield return baseResponse;
+        await foreach (var baseResponse in response.AsStream<ChatCompletionCreateResponse>(
+                           cancellationToken: cancellationToken)) yield return baseResponse;
     }
 }

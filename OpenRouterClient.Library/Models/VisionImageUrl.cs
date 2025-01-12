@@ -19,7 +19,7 @@ public class MessageImageUrl
     ///     Captcha submission is blocked
     /// </summary>
     [JsonPropertyName("url")]
-    public string Url { get; set; }
+    public string Url { get; set; } = null!;
 
     /// <summary>
     ///     The optional Detail property controls low or high fidelity image understanding
@@ -43,12 +43,12 @@ public class MessageImageFile
     ///     display the file content.
     /// </summary>
     [JsonPropertyName("file_id")]
-    public string FileId { get; set; }
+    public string FileId { get; set; } = null!;
 
     /// <summary>
     ///     Specifies the detail level of the image if specified by the user. low uses fewer tokens, you can opt in to high
     ///     resolution using high.
     /// </summary>
     [JsonPropertyName("detail")]
-    public string Detail { get; set; }
+    public string Detail { get; set; } = null!;
 }

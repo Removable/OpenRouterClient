@@ -2,6 +2,7 @@
 using System.Text.Json;
 using OpenRouterClient.Library.Helpers;
 using OpenRouterClient.Library.Models;
+using OpenRouterClient.Library.Models.Response;
 
 namespace OpenRouterClient.Library.Extensions;
 
@@ -59,13 +60,15 @@ public static class StreamHandleExtension
                 isEventDelta = false;
             }
 
-            switch (justDataMode)
+            if (justDataMode && !line.StartsWith("data: "))
             {
-                case true when !line.StartsWith("data: "):
-                    continue;
-                case false when isEventDelta:
-                    yield return new() { ObjectTypeName = "base.stream.event", StreamEvent = tempStreamEvent };
-                    continue;
+                continue;
+            }
+
+            if (!justDataMode && isEventDelta)
+            {
+                yield return new() { ObjectTypeName = "base.stream.event", StreamEvent = tempStreamEvent };
+                continue;
             }
 
             line = line.RemoveIfStartWith("data: ");
@@ -94,7 +97,7 @@ public static class StreamHandleExtension
             {
                 // When the API returns an error, it does not come back as a block, it returns a single character of text ("{").
                 // In this instance, read through the rest of the response, which should be a complete object to parse.
-                line += await reader.ReadToEndAsync();
+                line += await reader.ReadToEndAsync(cancellationToken);
                 block = JsonSerializer.Deserialize<TResponse>(line);
             }
 
@@ -120,7 +123,7 @@ public static class StreamHandleExtension
 
     private class ReassemblyContext
     {
-        private IList<ToolCall> _deltaFnCallList = new List<ToolCall>();
+        private readonly IList<ToolCall> _deltaFnCallList = new List<ToolCall>();
         public bool IsFnAssemblyActive => _deltaFnCallList.Count > 0;
 
 
@@ -133,7 +136,7 @@ public static class StreamHandleExtension
         /// <param name="block"></param>
         public void Process(ChatCompletionCreateResponse block)
         {
-            var firstChoice = block.Choices?.FirstOrDefault();
+            var firstChoice = block.Choices.FirstOrDefault();
             if (firstChoice == null)
             {
                 return;
@@ -175,7 +178,7 @@ public static class StreamHandleExtension
                     if (existItems)
                     {
                         //toolcall item must exists as added in previous steps, otherwise First() will raise an InvalidOperationException
-                        var tc = _deltaFnCallList!.First(t => t.Index == tcMetadata.index);
+                        var tc = _deltaFnCallList.First(t => t.Index == tcMetadata.index);
                         tc.FunctionCall!.Arguments += argumentsList.Current;
                         argumentsList.MoveNext();
                     }
@@ -185,10 +188,8 @@ public static class StreamHandleExtension
             // If we were assembling and it just finished, fill this block with the info we've assembled, and we're done.
             if (IsFnAssemblyActive && isStreamingFnCallEnd)
             {
-                firstChoice.Message ??= ChatMessage.FromAssistant(""); // just in case? not sure it's needed
                 // TODO When more than one function call is in a single index, OpenAI only returns the role delta at the beginning, which causes an issue.
                 // TODO The current solution addresses this problem, but we need to fix it by using the role of the index.
-                firstChoice.Message.Role ??= "assistant";
                 firstChoice.Message.ToolCalls = new List<ToolCall>(_deltaFnCallList);
                 _deltaFnCallList.Clear();
             }
@@ -199,26 +200,26 @@ public static class StreamHandleExtension
                 return
                     firstChoice.FinishReason ==
                     null && // actively streaming, is a tool call main item, and have a function call
-                    firstChoice.Message?.ToolCalls?.Count > 0 && (firstChoice.Message?.ToolCalls.Any(t =>
+                    firstChoice.Message.ToolCalls?.Count > 0 && (firstChoice.Message.ToolCalls.Any(t =>
                         t.FunctionCall != null && !string.IsNullOrEmpty(t.Id) &&
-                        t.Type == StaticValues.CompletionStatics.ToolType.Function) ?? false);
+                        t.Type == StaticValues.CompletionStatics.ToolType.Function));
             }
 
             (int index, string? id, string? type) GetToolCallMetadata()
             {
-                var tc = block.Choices?.FirstOrDefault()?.Message?.ToolCalls?.Where(t => t.FunctionCall != null)
+                var tc = block.Choices.FirstOrDefault()?.Message.ToolCalls?.Where(t => t.FunctionCall != null)
                     .Select(t => t).FirstOrDefault();
 
                 return tc switch
                 {
                     not null => (tc.Index, tc.Id, tc.Type),
-                    _ => (-1, default, default)
+                    _ => (-1, null, null)
                 };
             }
 
             IEnumerable<string> ExtractArgsSoFar()
             {
-                var toolCalls = block.Choices?.FirstOrDefault()?.Message?.ToolCalls;
+                var toolCalls = block.Choices.FirstOrDefault()?.Message.ToolCalls;
 
                 if (toolCalls != null)
                 {

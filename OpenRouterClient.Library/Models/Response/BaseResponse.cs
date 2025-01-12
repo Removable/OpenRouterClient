@@ -2,7 +2,7 @@
 using System.Net;
 using System.Text.Json;
 
-namespace OpenRouterClient.Library.Models;
+namespace OpenRouterClient.Library.Models.Response;
 
 public record ObjectBaseResponse
 {
@@ -70,10 +70,10 @@ public record DataWithPagingBaseResponse<T> : BaseResponse where T : IList
     public T? Data { get; set; }
 
     [JsonPropertyName("first_id")]
-    public string FirstId { get; set; }
+    public string FirstId { get; set; } = string.Empty;
 
     [JsonPropertyName("last_id")]
-    public string LastId { get; set; }
+    public string LastId { get; set; } = string.Empty;
 
     [JsonPropertyName("has_more")]
     public bool HasMore { get; set; }
@@ -107,7 +107,7 @@ public class Error
     public string? Message { get; private set; }
 
     [JsonIgnore]
-    public List<string?> Messages { get; private set; }
+    public List<string?> Messages { get; private set; } = [];
 
     [JsonPropertyName("message")]
     [JsonConverter(typeof(MessageConverter))]

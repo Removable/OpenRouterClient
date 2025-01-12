@@ -1,4 +1,4 @@
-﻿namespace OpenRouterClient.Library.Models;
+﻿namespace OpenRouterClient.Library.Models.Response;
 
 public class ErrorResponse
 {

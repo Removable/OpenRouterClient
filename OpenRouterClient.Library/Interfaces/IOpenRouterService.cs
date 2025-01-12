@@ -1,12 +1,11 @@
 ﻿using OpenRouterClient.Library.Models;
+using OpenRouterClient.Library.Models.Response;
 
 namespace OpenRouterClient.Library.Interfaces;
 
 public interface IOpenRouterService
 {
-    Task<ChatCompletionCreateResponse> ChatCompletionCreate(ChatCompletionCreateRequest chatCompletionCreateRequest,
-        CancellationToken cancellationToken = default);
+    public IModelService Models { get; }
 
-    IAsyncEnumerable<ChatCompletionCreateResponse> ChatCompletionCreateStream(
-        ChatCompletionCreateRequest chatCompletionCreateRequest, CancellationToken cancellationToken = default);
+    public IChatCompletionService ChatCompletion { get; }
 }
