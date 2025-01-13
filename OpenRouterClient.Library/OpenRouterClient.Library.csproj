@@ -17,6 +17,7 @@
         <PackageIcon>package-icon.png</PackageIcon>
         <PackageReadmeFile>Readme.md</PackageReadmeFile>
         <RepositoryUrl>https://github.com/Removable/OpenRouterClient/</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/Removable/OpenRouterClient/</PackageProjectUrl>
     </PropertyGroup>
 
     <ItemGroup>
