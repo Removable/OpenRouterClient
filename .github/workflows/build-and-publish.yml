@@ -37,9 +37,15 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
             dotnet-version: ${{ env.DOTNET_VERSION }}
+            
+      - name: Restore Nuget packages
+        run: dotnet restore
+        
+      - name: Build the project
+        run: dotnet build --configuration Release --no-restore
 
       - name: Create Nuget directory
-        run: dotnet pack --configuration Release --output ${{ env.NUGET_DIR }} ${{ env.PROJECT_FILE_PATH }}
+        run: dotnet pack --configuration Release --no-build --output ${{ env.NUGET_DIR }} ${{ env.PROJECT_FILE_PATH }}
 
       - name: Publish as an artifact
         uses: actions/upload-artifact@v4
