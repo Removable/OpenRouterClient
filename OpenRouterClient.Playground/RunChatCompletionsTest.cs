@@ -30,7 +30,7 @@ public static class RunChatCompletionsTest
 
             if (completionResult.Successful)
             {
-                Console.WriteLine(completionResult.Choices.First().Message.Content);
+                Console.WriteLine(completionResult.Choices?.First().Message.Content);
             }
             else
             {
@@ -72,7 +72,74 @@ public static class RunChatCompletionsTest
             {
                 if (completion.Successful)
                 {
-                    Console.Write(completion.Choices.First().Message.Content);
+                    Console.Write(completion.Choices?.First().Message.Content);
+                }
+                else
+                {
+                    if (completion.Error == null)
+                    {
+                        throw new("Unknown Error");
+                    }
+
+                    Console.WriteLine($"{completion.Error.Code}: {completion.Error.Message}");
+                }
+            }
+
+            Console.WriteLine("");
+            Console.WriteLine("Complete");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    public static async Task RunSimpleCompletionStreamWithImageTest(IOpenRouterService sdk)
+    {
+        ConsoleExtensions.WriteLine("Chat Completion Stream With Image Testing is starting:", ConsoleColor.Cyan);
+        try
+        {
+            ConsoleExtensions.WriteLine("Chat Completion Stream With Image Test:", ConsoleColor.DarkCyan);
+
+            List<MessageContent> contents =
+            [
+                new()
+                {
+                    Type = "text",
+                    Text = "Can you please describe this image?"
+                },
+                new()
+                {
+                    Type = "image_url1",
+                    ImageUrl = new()
+                    {
+                        Url =
+                            "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"
+                    }
+                }
+            ];
+
+            var completionResult = sdk.ChatCompletion.CreateCompletionAsStream(new()
+            {
+                Messages =
+                [
+                    new(StaticValues.ChatMessageRoles.System, "You are a helpful assistant."),
+                    new ChatMessage
+                    {
+                        Role = "user",
+                        Contents = contents
+                    }
+                ],
+                MaxTokens = 150,
+                Model = TestModel
+            });
+
+            await foreach (var completion in completionResult)
+            {
+                if (completion.Successful)
+                {
+                    Console.Write(completion.Choices?.First().Message.Content);
                 }
                 else
                 {
@@ -126,7 +193,7 @@ public static class RunChatCompletionsTest
                     }
                     else
                     {
-                        Console.Write(completion.Choices.First().Message.Content);
+                        Console.Write(completion.Choices?.First().Message.Content);
                     }
                 }
                 else

@@ -136,7 +136,7 @@ public static class StreamHandleExtension
         /// <param name="block"></param>
         public void Process(ChatCompletionCreateResponse block)
         {
-            var firstChoice = block.Choices.FirstOrDefault();
+            var firstChoice = block.Choices?.FirstOrDefault();
             if (firstChoice == null)
             {
                 return;
@@ -207,7 +207,7 @@ public static class StreamHandleExtension
 
             (int index, string? id, string? type) GetToolCallMetadata()
             {
-                var tc = block.Choices.FirstOrDefault()?.Message.ToolCalls?.Where(t => t.FunctionCall != null)
+                var tc = block.Choices?.FirstOrDefault()?.Message.ToolCalls?.Where(t => t.FunctionCall != null)
                     .Select(t => t).FirstOrDefault();
 
                 return tc switch
@@ -219,7 +219,7 @@ public static class StreamHandleExtension
 
             IEnumerable<string> ExtractArgsSoFar()
             {
-                var toolCalls = block.Choices.FirstOrDefault()?.Message.ToolCalls;
+                var toolCalls = block.Choices?.FirstOrDefault()?.Message.ToolCalls;
 
                 if (toolCalls != null)
                 {

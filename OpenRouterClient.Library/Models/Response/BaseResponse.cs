@@ -18,7 +18,7 @@ public record BaseResponse: ObjectBaseResponse
     public bool Successful => Error == null;
 
     [JsonPropertyName("error")]
-    public Error? Error { get; set; }
+    public OpenRouterError? Error { get; set; }
 
     public HttpStatusCode HttpStatusCode { get; set; }
     public ResponseHeaderValues? HeaderValues { get; set; }
@@ -89,6 +89,11 @@ public record ErrorList : DataBaseResponse<List<Error>>
 {
 }
 
+public class OpenRouterError: ErrorResponse
+{
+    
+}
+
 public class Error
 {
     [JsonPropertyName("code")]
@@ -119,7 +124,7 @@ public class Error
             {
                 case string s:
                     Message = s;
-                    Messages = new() { s };
+                    Messages = [s];
                     break;
                 case List<object> list when list.All(i => i is JsonElement):
                     Messages = list.Cast<JsonElement>().Select(e => e.GetString()).ToList();
