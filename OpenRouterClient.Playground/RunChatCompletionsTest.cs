@@ -104,14 +104,14 @@ public static class RunChatCompletionsTest
 
             List<MessageContent> contents =
             [
-                new()
+                new MessageContent
                 {
                     Type = "text",
                     Text = "Can you please describe this image?"
                 },
                 new()
                 {
-                    Type = "image_url1",
+                    Type = "image_url",
                     ImageUrl = new()
                     {
                         Url =
@@ -124,12 +124,8 @@ public static class RunChatCompletionsTest
             {
                 Messages =
                 [
-                    new(StaticValues.ChatMessageRoles.System, "You are a helpful assistant."),
-                    new ChatMessage
-                    {
-                        Role = "user",
-                        Contents = contents
-                    }
+                    ChatMessage.FromSystem("You are a helpful assistant."),
+                    ChatMessage.FromUser(contents),
                 ],
                 MaxTokens = 150,
                 Model = TestModel
