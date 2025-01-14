@@ -22,5 +22,5 @@ var openRouterService = serviceProvider.GetRequiredService<IOpenRouterService>()
 
 // ---------------
 
-// await RunChatCompletionsTest.RunSimpleCompletionStreamWithUsageTest(openRouterService);
-await RunModelsListTest.ModelsListTest(openRouterService, "temperature,top_p,tools");
+await RunChatCompletionsTest.RunSimpleCompletionStreamWithImageTest(openRouterService);
+// await RunModelsListTest.ModelsListTest(openRouterService, "temperature,top_p,tools");

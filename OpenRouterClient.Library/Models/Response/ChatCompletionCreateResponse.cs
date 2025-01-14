@@ -6,7 +6,7 @@ public record ChatCompletionCreateResponse: BaseResponse
     public string Id { get; set; } = null!;
     
     [JsonPropertyName("choices")]
-    public IList<ChatChoice> Choices { get; set; } = null!;
+    public IList<ChatChoice>? Choices { get; set; }
     
     [JsonPropertyName("created")]
     public long Created { get; set; }

@@ -149,11 +149,16 @@ internal static class HttpClientExtensions
         if (!response.Content.Headers.ContentType?.MediaType?.Equals("application/json",
                 StringComparison.OrdinalIgnoreCase) ?? true)
         {
+            var error = new Error
+            {
+                MessageObject = await response.Content.ReadAsStringAsync(cancellationToken)
+            };
+
             result = new()
             {
                 Error = new()
                 {
-                    MessageObject = await response.Content.ReadAsStringAsync(cancellationToken)
+                    Metadata = new Dictionary<string, object>() { { "raw", error } }
                 }
             };
         }
