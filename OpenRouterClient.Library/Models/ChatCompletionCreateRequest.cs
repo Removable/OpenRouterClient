@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using OpenRouterClient.Library.Helpers;
 using OpenRouterClient.Library.Models.Enums;
 
 namespace OpenRouterClient.Library.Models;
@@ -61,6 +62,35 @@ public class ChatCompletionCreateRequest
     [JsonPropertyName("temperature")] public double? Temperature { get; set; }
 
     // todo: tools, tool_choice
+    /// <summary>
+    ///     A list of functions the model may generate JSON inputs for.
+    /// </summary>
+    [JsonPropertyName("tools")]
+    public IList<ToolDefinition>? Tools { get; set; }
+    
+    [JsonIgnore]
+    public ToolChoice? ToolChoice { get; set; }
+
+
+
+    [JsonPropertyName("tool_choice")]
+    public object? ToolChoiceCalculated
+    {
+        get
+        {
+            if (ToolChoice != null && ToolChoice.Type != StaticValues.CompletionStatics.ToolChoiceType.Function && ToolChoice.Function != null)
+            {
+                throw new ValidationException("You cannot choose another type besides \"function\" while ToolChoice.Function is not null.");
+            }
+
+            if (ToolChoice?.Type == StaticValues.CompletionStatics.ToolChoiceType.Function)
+            {
+                return ToolChoice;
+            }
+
+            return ToolChoice?.Type;
+        }
+    }
 
     [JsonPropertyName("seed")] public int? Seed { get; set; }
     [JsonPropertyName("top_p")] public double? TopP { get; set; }
