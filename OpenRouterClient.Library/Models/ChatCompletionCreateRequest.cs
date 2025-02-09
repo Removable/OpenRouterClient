@@ -61,6 +61,11 @@ public class ChatCompletionCreateRequest
     [JsonPropertyName("temperature")] public double? Temperature { get; set; }
 
     // todo: tools, tool_choice
+    /// <summary>
+    ///     A list of functions the model may generate JSON inputs for.
+    /// </summary>
+    [JsonIgnore]
+    public IList<ToolDefinition>? Tools { get; set; }
 
     [JsonPropertyName("seed")] public int? Seed { get; set; }
     [JsonPropertyName("top_p")] public double? TopP { get; set; }
