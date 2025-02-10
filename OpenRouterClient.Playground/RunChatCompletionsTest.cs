@@ -115,7 +115,7 @@ public static class RunChatCompletionsTest
                     ImageUrl = new()
                     {
                         Url =
-                            "https://easygptimages-1252019851.cos.ap-tokyo.myqcloud.com/user-upload/PixPin_2025-01-19_11-19-05.png?q-sign-algorithm=sha1&q-ak=AKID6pruBTHjnknEeu_bwwIwbZL4q4eTMeUOBUB7M9G7jrJFgKiPCHzyxzUv7p_7SLkA&q-sign-time=1737257277;1737260877&q-key-time=1737257277;1737260877&q-header-list=&q-url-param-list=&q-signature=eb844601f12d26c4ab90e657d06051fc2e58ec26&x-cos-security-token=QvzfKOZ6fiVOHJWveXORqBxTaFuHl9ea6cd6089b2336efe79f391eb42e7a39ccGvWMmP-h5XNaSmy6adeTdxaeN5M8VXl-ZXaDjMBrzlCZvrJG2WOA2aSXJg6oaATX3U3Mzg8XwT9zcsGZXu51ceuyFG1xKTwCatTOsGWpppjErXsg_0E-NdkTK7I2TOFvxCv6PmMObvPIcciGTeluR5EDXrRmUHCh2qe9WmN54KNmYAXvf936s7pnnTHC3yfv"
+                            "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"
                     }
                 }
             ];

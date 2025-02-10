@@ -7,7 +7,7 @@ public class ToolDefinition
     ///     Required. The type of the tool. Currently, only function is supported.
     /// </summary>
     [JsonPropertyName("type")]
-    public string Type { get; set; }
+    public string Type { get; set; } = "function";
     /// <summary>
     ///     Required. The description of what the function does.
     /// </summary>
