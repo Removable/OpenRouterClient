@@ -103,6 +103,12 @@ public class ChatCompletionCreateRequest
 
     [JsonPropertyName("repetition_penalty")]
     public double? RepetitionPenalty { get; set; }
+    
+    [JsonPropertyName("max_price")]
+    public MaxPriceOptions? MaxPrice { get; set; }
+    
+    [JsonPropertyName("include_reasoning")]
+    public bool IncludeReasoning { get; set; }
 
     /// <summary>
     ///     Modify the likelihood of specified tokens appearing in the completion.
